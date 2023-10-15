@@ -1,0 +1,92 @@
+<div class="container">
+  <button
+    type="button"
+    class="btn btn-success"
+    data-bs-toggle="modal"
+    data-bs-target="#addNotesModal"
+  >
+    Create Note
+    <i class="bi bi-plus-circle"></i></button>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card card-body">
+          <h4>Angular 14 Tutorial</h4>
+          <p class="text-muted">
+            Angular 14 is a framwork bla bla blaa blaaa. Angular 14 is a
+            framwork bla bla blaa blaaa.Angular 14 is a framwork bla bla blaa
+            blaaa.Angular 14 is a framwork bla bla blaa blaaa.Angular 14 is a
+            framwork bla bla blaa blaaa.Angular 14 is a framwork bla bla blaa
+            blaaa.
+          </p>
+          <div class="d-flex align-items-center">
+            <span class="mx-2">
+              <i class="bi bi-pen text-info" data-bs-toggle="modal"
+              data-bs-target="#editNotesModal"></i>
+            </span>
+            <span class="mx-2">
+              <i class="bi bi-trash text-danger"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- add daily notes model -->
+<div class="modal fade" id="addNotesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Daily Notes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="noteForm">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Note Title:</label>
+            <input type="text" class="form-control" id="recipient-name" formControlName="title">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Note Description:</label>
+            <textarea class="form-control" id="message-text" formControlName="description"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="addNote()" [disabled]="noteForm.invalid">Add Notes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit Notes Model -->
+<div class="modal fade" id="editNotesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Notes</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Note Title:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Note Description:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Update Notes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
