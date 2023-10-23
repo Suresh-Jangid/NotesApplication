@@ -8,16 +8,11 @@
     Create Note
     <i class="bi bi-plus-circle"></i></button>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4" *ngFor="let note of notesData">
       <div class="card">
         <div class="card card-body">
-          <h4>Angular 14 Tutorial</h4>
-          <p class="text-muted">
-            Angular 14 is a framwork bla bla blaa blaaa. Angular 14 is a
-            framwork bla bla blaa blaaa.Angular 14 is a framwork bla bla blaa
-            blaaa.Angular 14 is a framwork bla bla blaa blaaa.Angular 14 is a
-            framwork bla bla blaa blaaa.Angular 14 is a framwork bla bla blaa
-            blaaa.
+          <h4>{{note.attributes.note_title}}</h4>
+          <p class="text-muted">{{note.attributes.note_desc}}
           </p>
           <div class="d-flex align-items-center">
             <span class="mx-2">
@@ -45,11 +40,11 @@
         <form [formGroup]="noteForm">
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Note Title:</label>
-            <input type="text" class="form-control" id="recipient-name" formControlName="title">
+            <input type="text" class="form-control" id="recipient-name" formControlName="note_title">
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Note Description:</label>
-            <textarea class="form-control" id="message-text" formControlName="description"></textarea>
+            <textarea class="form-control" id="message-text" formControlName="note_desc"></textarea>
           </div>
         </form>
       </div>

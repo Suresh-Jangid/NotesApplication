@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Note } from './note';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment as env } from 'src/environments/environment';
 import {
   Firestore,
   addDoc,
@@ -15,31 +17,52 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class NoteService {
-  constructor(private fs: Firestore) {}
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
+
+
+  Url = env.apiUrl;
+
+  constructor(private fs: Firestore, private http:HttpClient,) {}
 
   // Add new Note code here
-  addNote(note: Note) {
-    note.id = doc(collection(this.fs, 'id')).id
+  addNote(note: any){
     debugger
-    return addDoc(collection(this.fs, 'Notes'), note)
+    return this.http.post(this.Url + '/api/notes-apps', note)
   }
+
+
+  // addNote(note: Note) {
+  //   note.id = doc(collection(this.fs, 'id')).id
+  //   debugger
+  //   return addDoc(collection(this.fs, 'Notes'), note)
+  // }
 
   //Get All notes form Database
-  getNotes(): Observable<Note[]> {
-    let notesRef = collection(this.fs, 'Notes');
-    return collectionData(notesRef, { idField: 'id' }) as Observable<Note[]>;
+  getNotes(){
+    return this.http.get(this.Url + '/api/notes-apps')
   }
+
+  // getNotes(): Observable<Note[]> {
+  //   let notesRef = collection(this.fs, 'Notes');
+  //   return collectionData(notesRef, { idField: 'id' }) as Observable<Note[]>;
+  // }
 
   //Delete notes from Database
-  deleteNote(note: Note) {
-    let docRef = doc(this.fs, `Notes/${note.id}`);
 
-    return deleteDoc(docRef);
-  }
+  // deleteNote(note: Note) {
+  //   let docRef = doc(this.fs, `Notes/${note.id}`);
+
+  //   return deleteDoc(docRef);
+  // }
 
   //Update Notes from Database
-  updateNote(note: Note, notes: any) {
-    let docRef = doc(this.fs, `Notes/${note.id}`);
-    return updateDoc(docRef, notes);
-  }
+
+  // updateNote(note: Note, notes: any) {
+  //   let docRef = doc(this.fs, `Notes/${note.id}`);
+  //   return updateDoc(docRef, notes);
+  // }
 }
