@@ -8,5 +8,5 @@ export const environment = {
     messagingSenderId: "52303236292",
     appId: "1:52303236292:web:d4fd51c47a9f8788d48d91"
   },
-  apiUrl : "http://localhost:1337"
+  apiUrl : "http://localhost:1337/api/notes-apps"
 };

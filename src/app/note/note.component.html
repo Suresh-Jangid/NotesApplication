@@ -20,7 +20,7 @@
               data-bs-target="#editNotesModal"></i>
             </span>
             <span class="mx-2">
-              <i class="bi bi-trash text-danger"></i>
+              <i class="bi bi-trash text-danger" (click)="delNote()"></i>
             </span>
           </div>
         </div>
@@ -39,12 +39,12 @@
       <div class="modal-body">
         <form [formGroup]="noteForm">
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Note Title:</label>
-            <input type="text" class="form-control" id="recipient-name" formControlName="note_title">
+            <label for="note_title" class="col-form-label">Note Title:</label>
+            <input type="text" class="form-control" formControlName="note_title">
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Note Description:</label>
-            <textarea class="form-control" id="message-text" formControlName="note_desc"></textarea>
+            <label for="note_desc" class="col-form-label">Note Description:</label>
+            <textarea class="form-control" formControlName="note_desc"></textarea>
           </div>
         </form>
       </div>
@@ -66,20 +66,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="editForm">
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Note Title:</label>
-            <input type="text" class="form-control" id="recipient-name">
+            <label for="edit_title" class="col-form-label">Note Title:</label>
+            <input type="text" class="form-control" formControlName="edit_title">
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Note Description:</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <label for="edit_desc" class="col-form-label">Note Description:</label>
+            <textarea class="form-control" formControlName="edit_desc"></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Update Notes</button>
+        <button type="button" class="btn btn-primary" [disabled]="editForm.invalid">Update Notes</button>
       </div>
     </div>
   </div>

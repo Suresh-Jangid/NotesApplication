@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { NoteService } from '../note.service';
 import { Note } from '../note';
 
@@ -9,51 +14,102 @@ import { Note } from '../note';
   styleUrls: ['./note.component.css'],
 })
 export class NoteComponent implements OnInit {
-  noteForm!: FormGroup;
+  notesData!: any; //for get data object created and show all data
+
+  noteForm!: FormGroup; // for addform for frorm group
+  editForm!: FormGroup; // for editform for frorm group
+
   noteObj: Note = {
     id: '',
     note_title: '',
     note_desc: '',
-  };
-  notesData!: any;
+  }; // for object post all method interface
+
   constructor(private fb: FormBuilder, private noteService: NoteService) {
     this.noteForm = this.fb.group({
-      note_title: ['', Validators.required],
-      note_desc: ['', Validators.required],
+      note_title: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
+      note_desc: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(500),
+      ]),
+    }); // for add form validation fields
+
+    this.editForm = this.fb.group({
+      edit_title: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
+      edit_desc: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(500),
+      ]),
+    }); // for edit form validation fields
+  }
+
+  ngOnInit() {
+    this.getAllNotes();
+  }
+
+  // Create Notes using strapi
+  addNote() {
+    let obj = {
+      data: {
+        note_title: this.noteForm.value.note_title,
+        note_desc: this.noteForm.value.note_desc,
+      },
+    };
+    this.noteService.addNote(obj).subscribe({
+      next: (res: any) => {
+        console.log('Post Successfully', res.data);
+      },
+      error: (err) => {},
+      complete: () => {},
     });
   }
-  ngOnInit() {
-    this.getAllNotes()
-  }
 
-// Create Notes using strapi
-addNote(){
-  debugger
-  const obj = this.noteForm;
-    console.log(obj);
-    this.noteService.addNote(obj).subscribe({
-      next:(data:any)=>{
-        debugger
-      console.log('Post Successfully',data);
-    },
-    error:(err)=>{},
-    complete:()=>{}
-  })
-  //   this.noteObj.id = '',
-  //   this.noteObj.note_title = value.title,
-  //   this.noteObj.note_desc = value.description,
-}
-
-
-
-    // Get All
-    getAllNotes(){
-      this.noteService.getNotes().subscribe({next:(res:any)=>{
+  // Get All Using Strapi cms
+  getAllNotes() {
+    this.noteService.getNotes().subscribe({
+      next: (res: any) => {
         console.log(res.data);
         this.notesData = res.data;
       },
-      error:(err)=>{},
-      complete:()=>{},
-    })
-    }
+      error: (err) => {},
+      complete: () => {},
+    });
+  }
+
+// Update Note Using Strapi cms
+updateNote(id:any){
+  let obj = {
+    data: {
+      id:this.editForm.value.id,
+      edit_title: this.editForm.value.edit_title,
+      edit_desc: this.editForm.value.edit_desc,
+    },
+  };
+  console.log(obj);
+  this.noteService.updateNote(this.editForm,this.noteObj.id).subscribe({
+    next: (res: any) => {
+      console.log('Update Note Successfully!', res.data);
+      this.noteObj.id = res.data.id;
+      console.log('data id'+ res.data.id);
+    },
+    error: (err) => {},
+    complete: () => {},
+  });
+}
+//delete Note using strapi
+delNote(){
+  debugger
+  this.noteService.deleteNote(this.editForm.value.id).subscribe({
+    next:(res:any)=> {
+      console.log('Delete Note Successfully!',res.data);
+    },
+  })
+}
+
 }

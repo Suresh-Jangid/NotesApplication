@@ -26,43 +26,32 @@ export class NoteService {
 
   Url = env.apiUrl;
 
-  constructor(private fs: Firestore, private http:HttpClient,) {}
+  constructor(private http:HttpClient,) {}
 
   // Add new Note code here
-  addNote(note: any){
-    debugger
-    return this.http.post(this.Url + '/api/notes-apps', note)
+  addNote(data: any){
+    return this.http.post(`${this.Url}`, data);
   }
-
-
-  // addNote(note: Note) {
-  //   note.id = doc(collection(this.fs, 'id')).id
-  //   debugger
-  //   return addDoc(collection(this.fs, 'Notes'), note)
-  // }
 
   //Get All notes form Database
   getNotes(){
-    return this.http.get(this.Url + '/api/notes-apps')
+    return this.http.get(this.Url + '?populate=*')
   }
 
-  // getNotes(): Observable<Note[]> {
-  //   let notesRef = collection(this.fs, 'Notes');
-  //   return collectionData(notesRef, { idField: 'id' }) as Observable<Note[]>;
-  // }
+  //Get By Id notes form Database
+
 
   //Delete notes from Database
-
-  // deleteNote(note: Note) {
-  //   let docRef = doc(this.fs, `Notes/${note.id}`);
-
-  //   return deleteDoc(docRef);
-  // }
+deleteNote(id:any){
+  debugger
+  return this.http.delete(`${this.Url}/${id}`,{responseType:'json'});
+}
 
   //Update Notes from Database
-
-  // updateNote(note: Note, notes: any) {
-  //   let docRef = doc(this.fs, `Notes/${note.id}`);
-  //   return updateDoc(docRef, notes);
-  // }
+  updateNote(id:any,body:any){
+    debugger
+    return this.http.put(`${this.Url}/${id}`,body);
+  }
 }
+
+
