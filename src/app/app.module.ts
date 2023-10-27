@@ -18,8 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore()),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,16 +2,7 @@ import { Injectable } from '@angular/core';
 import { Note } from './note';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment as env } from 'src/environments/environment';
-import {
-  Firestore,
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  updateDoc,
-} from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +30,9 @@ export class NoteService {
   }
 
   //Get By Id notes form Database
-
+getById(id:any){
+  return this.http.get(`${this.Url}/${id}`,{responseType:'json'})
+}
 
   //Delete notes from Database
 deleteNote(id:any){

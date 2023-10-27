@@ -1,7 +1,7 @@
 <div class="container">
   <button
     type="button"
-    class="btn btn-success"
+    class="btn btn-success mb-3"
     data-bs-toggle="modal"
     data-bs-target="#addNotesModal"
   >
@@ -17,10 +17,10 @@
           <div class="d-flex align-items-center">
             <span class="mx-2">
               <i class="bi bi-pen text-info" data-bs-toggle="modal"
-              data-bs-target="#editNotesModal"></i>
+              data-bs-target="#editNotesModal" (click)="getById(note.id)"></i>
             </span>
             <span class="mx-2">
-              <i class="bi bi-trash text-danger" (click)="delNote()"></i>
+              <i class="bi bi-trash text-danger" (click)="delNote(note.id)"></i>
             </span>
           </div>
         </div>
@@ -50,7 +50,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="addNote()" [disabled]="noteForm.invalid">Add Notes</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addNote()" [disabled]="noteForm.invalid">Add Notes</button>
       </div>
     </div>
   </div>
@@ -69,17 +69,17 @@
         <form [formGroup]="editForm">
           <div class="mb-3">
             <label for="edit_title" class="col-form-label">Note Title:</label>
-            <input type="text" class="form-control" formControlName="edit_title">
+            <input type="text" class="form-control" formControlName="edit_title" [value]="noteGetById?.attributes.note_title">
           </div>
           <div class="mb-3">
             <label for="edit_desc" class="col-form-label">Note Description:</label>
-            <textarea class="form-control" formControlName="edit_desc"></textarea>
+            <textarea class="form-control" formControlName="edit_desc" [value]="noteGetById?.attributes.note_desc"></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" [disabled]="editForm.invalid">Update Notes</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="editForm.invalid" (click)="updateNote(noteGetById?.id)">Update Notes</button>
       </div>
     </div>
   </div>

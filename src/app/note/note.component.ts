@@ -15,7 +15,7 @@ import { Note } from '../note';
 })
 export class NoteComponent implements OnInit {
   notesData!: any; //for get data object created and show all data
-
+  noteGetById!: any; // Get Id for Update data and bind data in model
   noteForm!: FormGroup; // for addform for frorm group
   editForm!: FormGroup; // for editform for frorm group
 
@@ -50,7 +50,7 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllNotes();
+    this.getAllNotes(); // initial call method when page rendering
   }
 
   // Create Notes using strapi
@@ -60,14 +60,16 @@ export class NoteComponent implements OnInit {
         note_title: this.noteForm.value.note_title,
         note_desc: this.noteForm.value.note_desc,
       },
-    };
+    }; // this Obj in pass data using form and data key word is strapi structur for used
     this.noteService.addNote(obj).subscribe({
       next: (res: any) => {
         console.log('Post Successfully', res.data);
+        this.getAllNotes();
       },
       error: (err) => {},
       complete: () => {},
     });
+    this.noteForm.reset();
   }
 
   // Get All Using Strapi cms
@@ -82,34 +84,53 @@ export class NoteComponent implements OnInit {
     });
   }
 
-// Update Note Using Strapi cms
-updateNote(id:any){
-  let obj = {
-    data: {
-      id:this.editForm.value.id,
-      edit_title: this.editForm.value.edit_title,
-      edit_desc: this.editForm.value.edit_desc,
-    },
-  };
-  console.log(obj);
-  this.noteService.updateNote(this.editForm,this.noteObj.id).subscribe({
-    next: (res: any) => {
-      console.log('Update Note Successfully!', res.data);
-      this.noteObj.id = res.data.id;
-      console.log('data id'+ res.data.id);
-    },
-    error: (err) => {},
-    complete: () => {},
-  });
-}
-//delete Note using strapi
-delNote(){
-  debugger
-  this.noteService.deleteNote(this.editForm.value.id).subscribe({
-    next:(res:any)=> {
-      console.log('Delete Note Successfully!',res.data);
-    },
-  })
-}
+  // GetBy Id Using Strapi cms
+  getById(note: Note) {
+    // this is Get By Id note in selected data with getbyid using note key word in id Note in All data
+    this.noteService.getById(note).subscribe({
+      next: (res: any) => {
+        console.log('Get By ID using Strapi', res.data);
+        this.noteGetById = res.data;
+        console.log(this.noteGetById);
+      },
+      error: (err) => {},
+      complete: () => {},
+    });
+    this.getAllNotes();
+  }
 
+  // Update Note Using Strapi cms
+  updateNote(notes: Note) {
+    let Obj: any = {
+      data: {
+        note_title: this.editForm.value.edit_title,
+        note_desc: this.editForm.value.edit_desc,
+      },
+    }; // this Obj in set data with getbyid using note key word in id  Note in selected data form and data key word is strapi structur for used
+    console.log(notes, Obj);
+    this.noteService.updateNote(notes, Obj).subscribe({
+      next: (res: any) => {
+        console.log('Update Note Successfully!', res.data);
+        this.noteObj.id = res.data.id;
+        console.log('data id ' + res.data.id);
+        this.getAllNotes();
+      },
+      error: (err) => {},
+      complete: () => {},
+    });
+    this.editForm.reset();
+  }
+
+  //delete Note using strapi
+  delNote(note: Note) {
+    // this note in  selected data with getbyid using note key word in id Note in All data
+    this.noteService.deleteNote(note).subscribe({
+      next: (res: any) => {
+        console.log('Delete Note Successfully!', res.data);
+        this.getAllNotes();
+      },
+      error: (err) => {},
+      complete: () => {},
+    });
+  }
 }
