@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { NoteService } from '../note.service';
 import { Note } from '../note';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-note',
@@ -18,14 +19,13 @@ export class NoteComponent implements OnInit {
   noteGetById!: any; // Get Id for Update data and bind data in model
   noteForm!: FormGroup; // for addform for frorm group
   editForm!: FormGroup; // for editform for frorm group
-
   noteObj: Note = {
     id: '',
     note_title: '',
     note_desc: '',
   }; // for object post all method interface
 
-  constructor(private fb: FormBuilder, private noteService: NoteService) {
+  constructor(private fb: FormBuilder, private noteService: NoteService,private spinner: NgxSpinnerService) {
     this.noteForm = this.fb.group({
       note_title: new FormControl('', [
         Validators.required,
@@ -48,6 +48,7 @@ export class NoteComponent implements OnInit {
       ]),
     }); // for edit form validation fields
   }
+
 
   ngOnInit() {
     this.getAllNotes(); // initial call method when page rendering
@@ -74,10 +75,14 @@ export class NoteComponent implements OnInit {
 
   // Get All Using Strapi cms
   getAllNotes() {
+    this.spinner.show();
     this.noteService.getNotes().subscribe({
       next: (res: any) => {
         console.log(res.data);
         this.notesData = res.data;
+        setTimeout(()=>{
+          this.spinner.hide();
+        },5000);
       },
       error: (err) => {},
       complete: () => {},
