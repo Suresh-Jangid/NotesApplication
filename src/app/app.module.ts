@@ -7,6 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxSpinnerModule } from "ngx-spinner";
+import {ToastrModule} from 'ngx-toastr'
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +18,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    ToastrModule.forRoot(),
     BrowserAnimationsModule,
     NgxSpinnerModule
   ],

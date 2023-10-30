@@ -8,7 +8,7 @@ import {
 import { NoteService } from '../note.service';
 import { Note } from '../note';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-note',
   templateUrl: './note.component.html',
@@ -25,7 +25,10 @@ export class NoteComponent implements OnInit {
     note_desc: '',
   }; // for object post all method interface
 
-  constructor(private fb: FormBuilder, private noteService: NoteService,private spinner: NgxSpinnerService) {
+  constructor(private fb: FormBuilder,
+     private noteService: NoteService,
+     private spinner: NgxSpinnerService,
+     public toastr: ToastrService) {
     this.noteForm = this.fb.group({
       note_title: new FormControl('', [
         Validators.required,
@@ -66,8 +69,15 @@ export class NoteComponent implements OnInit {
       next: (res: any) => {
         console.log('Post Successfully', res.data);
         this.getAllNotes();
+        this.toastr.success('Your data successfully Added !', 'Success !', {
+          timeOut: 2000,
+        });
       },
-      error: (err) => {},
+      error: (err) => {
+        this.toastr.error('Something is wrogn !', 'Major Error !', {
+          timeOut: 2000,
+        });
+      },
       complete: () => {},
     });
     this.noteForm.reset();
@@ -118,9 +128,16 @@ export class NoteComponent implements OnInit {
         console.log('Update Note Successfully!', res.data);
         this.noteObj.id = res.data.id;
         console.log('data id ' + res.data.id);
+        this.toastr.warning('Your data successfully Updated !', 'Warn !', {
+          timeOut: 2000,
+        });
         this.getAllNotes();
       },
-      error: (err) => {},
+      error: (err) => {
+        this.toastr.error('everything is broken !', 'Major Error !', {
+          timeOut: 2000,
+        });
+      },
       complete: () => {},
     });
     this.editForm.reset();
@@ -132,9 +149,16 @@ export class NoteComponent implements OnInit {
     this.noteService.deleteNote(note).subscribe({
       next: (res: any) => {
         console.log('Delete Note Successfully!', res.data);
+        this.toastr.warning('Your data successfully Deleted !', 'Delete !', {
+          timeOut: 2000,
+        });
         this.getAllNotes();
       },
-      error: (err) => {},
+      error: (err) => {
+        this.toastr.error('everything is broken !', 'Major Error !', {
+          timeOut: 2000,
+        });
+      },
       complete: () => {},
     });
   }
